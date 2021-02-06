@@ -41,3 +41,26 @@ def get_company_sentiment(company_names, comments):
         return {key: val for key, val in sorted_lst}
     top_values = sorted_lst[:10] + sorted_lst[-10:]
     return {key: val for key, val in top_values}
+
+
+
+def get_company_count(company_names, comments):
+    count_data = dict()
+    for comment in comments:
+        for ticker, company in company_names:
+            if (comment.find(" " + ticker + " ") >= 0 or comment.find(" $" + ticker + " ") >= 0) and ticker not in black_list:
+                if not ticker in count_data:
+                    count_data[ticker] = 1
+                else:
+                    count_data[ticker] += 1
+                    
+    lst = [(ticker, val) for ticker, val in count_data.items()]
+    sorted_lst = sorted(lst, key=lambda x: x[1])
+
+    if len(sorted_lst) < 20:
+        return {key: val for key, val in sorted_lst}
+
+    top_values = sorted_lst[:20]
+    return {key: val for key, val in top_values}
+
+    

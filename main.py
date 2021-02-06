@@ -21,7 +21,7 @@ def main():
     print("5")
     companies = pruner_bigboy()
     print("6")
-    data = get_company_sentiment(companies, master_list)
+    data = get_company_count(companies, master_list)
     print("7")
     dict_to_graph(data)
 
