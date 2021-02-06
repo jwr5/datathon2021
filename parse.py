@@ -7,8 +7,8 @@ def parse_tickers_names(filename):
     return exchange_list
 
 def df_concat(filenames):
-    ticks_and_names = parse_tickers_names(filenames[0])
-    for exchange in filenames[1:-1]:
+    ticks_and_names = pd.DataFrame()
+    for exchange in filenames:
         exchange_temp = parse_tickers_names(exchange)
         ticks_and_names = pd.concat([ticks_and_names, exchange_temp])
     return ticks_and_names
