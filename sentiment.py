@@ -8,11 +8,6 @@ SIMILARITY_THRESHOLD = 0.65
 def similar(a, b, min_similarity=SIMILARITY_THRESHOLD):
     return SequenceMatcher(None, a, b).ratio() > min_similarity
 
-# Iterate through each word in a comment
-# Compare if two strings are similar enough to be considered the same
-# if they are, calculate the sentiment score of the comment associated with the
-# matched string
-
 
 def get_company_sentiment(company_names, comments):
     # company_names - [(ticker, company_name)]
