@@ -45,7 +45,7 @@ def get_posts(sub, post_limit):
     master_list = []
     
     for submission in hot_sub:
-        if submission.link_flair_text != 'Meme':
+        if submission.link_flair_text != 'Meme' and submission.link_flair_text != 'Weekend Discussion':
             master_list.append(submission.selftext)
     
     return master_list
@@ -61,7 +61,27 @@ def get_titles(sub, post_limit):
     
 
     for submission in hot_sub:
-        if submission.link_flair_text != 'Meme':
+        if submission.link_flair_text != 'Meme' and submission.link_flair_text != 'Weekend Discussion':
             master_list.append(submission.title)
+    
+    return master_list
+
+#returns a list of lists. each list contains the
+#body of the post, number of upvotes, and 
+#number of awards
+def get_posts_extra(sub, post_limit):
+    
+    reddit = get_reddit()
+    subreddit = reddit.subreddit(sub)
+    hot_sub = subreddit.hot(limit = post_limit)
+    master_list = []
+    
+    for submission in hot_sub:
+        if submission.link_flair_text != 'Meme' and submission.link_flair_text != 'Weekend Discussion':
+            sub_list = []
+            sub_list.append(submission.selftext)
+            sub_list.append(submission.score)
+            sub_list.append(len(submission.all_awardings))
+            master_list.append(sub_list)
     
     return master_list
