@@ -41,11 +41,22 @@ def company_pruner(company_list, cutoff_frequency):
     return pruned_list
 
 def zip_list(list1, list2):
-    zip_list = tuple(zip(list1, list2))
+    zip_list = list(zip(list1, list2))
     return zip_list
 
-ticks, companies = df_cols_to_list(['amex.csv', 'nyse.csv', 'nasdaq.csv'])
-print(ticks)
-print(companies)
-pruned_lst = company_pruner(companies, 10)
-print(pruned_lst)
+def pruner_bigboy():
+    ticks, companies = df_cols_to_list(['amex.csv', 'nyse.csv', 'nasdaq.csv'])
+    pruned_companies = company_pruner(companies, 18)
+    ticks_names = zip_list(ticks, pruned_companies)
+    tn_copy = ticks_names.copy()
+    for item in ticks_names:
+        if item[1] == "" or item [1] == " ":
+            tn_copy.remove(item)
+    
+    return tn_copy
+
+lst = pruner_bigboy()
+print(lst)
+for item in lst:
+    if item[1] == "" or item [1] == " ":
+            print("fuck")
