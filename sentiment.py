@@ -1,5 +1,18 @@
 from analysis.vader import sentiment_score
 
+from difflib import SequenceMatcher
+
+SIMILARITY_THRESHOLD = 0.65
+
+
+def similar(a, b, min_similarity=SIMILARITY_THRESHOLD):
+    return SequenceMatcher(None, a, b).ratio() > min_similarity
+
+# Iterate through each word in a comment
+# Compare if two strings are similar enough to be considered the same
+# if they are, calculate the sentiment score of the comment associated with the
+# matched string
+
 
 def get_company_sentiment(company_names, comments):
     # company_names - [(ticker, company_name)]
@@ -7,10 +20,11 @@ def get_company_sentiment(company_names, comments):
     sentiment_data = dict()
     for comment in comments:
         lower_comment = comment.lower()
-        for ticker, company in company_names:
-            if lower_comment.find(ticker.lower()) > 0 or lower_comment.find(company.lower()) > 0:
-                if not company in sentiment_data:
-                    sentiment_data[company] = sentiment_score(lower_comment)
-                else:
-                    sentiment_data[company] += sentiment_score(lower_comment)
+        for word in lower_comment.split():
+            for ticker, company in company_names:
+                if similar(word, ticker) or similar(word, company):
+                    if not company in sentiment_data:
+                        sentiment_data[ticker] = sentiment_score(comment)[1]
+                    else:
+                        sentiment_data[ticker] += sentiment_score(comment)[1]
     return sentiment_data
