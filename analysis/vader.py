@@ -6,13 +6,20 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
 from pprint import pprint
 nltk.download('vader_lexicon')
 sia = SIA()
-results = []
+
+
+def sentiment_scores(comments):
+    results = []
+    for post in comments:
+        pol_score = sia.polarity_scores(post[0])
+        results.append((post[0], post[1], post[2], pol_score['compound']))
+    return results
 
 
 def sentiment_score(comment):
     pol_score = sia.polarity_scores(comment)
     pol_score['comment'] = comment
-    return pol_score['compound']
+    return (pol_score['comment'], pol_score['compound'])
 # pprint(results[:7], width=100)
 # df1 = pd.DataFrame.from_records(results)
 # df1['label'] = 0
