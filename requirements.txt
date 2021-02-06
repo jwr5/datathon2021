@@ -1,0 +1,6 @@
+seaborn
+pandas
+numpy
+praw
+matplotlib
+nltk
