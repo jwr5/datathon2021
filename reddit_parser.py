@@ -26,13 +26,14 @@ def get_comments(sub, post_limit, comment_limit):
     master_list = []
     
     for submission in hot_sub:
-        comments = submission.comments
-        limit = 0
-        for comment in comments:
-            if limit > comment_limit:
-                break
-            master_list.append(comment.body)
-            limit = limit + 1
+        if submission.link_flair_text != 'Meme':
+            comments = submission.comments
+            limit = 0
+            for comment in comments:
+                if limit > comment_limit:
+                    break
+                master_list.append(comment.body)
+                limit = limit + 1
     return master_list
 
 #returns a list of strings from the bodies of posts
@@ -44,7 +45,8 @@ def get_posts(sub, post_limit):
     master_list = []
     
     for submission in hot_sub:
-        master_list.append(submission.selftext)
+        if submission.link_flair_text != 'Meme':
+            master_list.append(submission.selftext)
     
     return master_list
 
@@ -59,6 +61,7 @@ def get_titles(sub, post_limit):
     
 
     for submission in hot_sub:
-        master_list.append(submission.title)
+        if submission.link_flair_text != 'Meme':
+            master_list.append(submission.title)
     
     return master_list
