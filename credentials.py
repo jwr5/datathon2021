@@ -1,1 +1,1 @@
-hi 
+CLIENT_SECRET = 'ZdHNBR6xxLlvPRGhFHkdml13GnVW1w'
