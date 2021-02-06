@@ -38,6 +38,7 @@ def get_comments(sub, post_limit, comment_limit):
                 if limit > comment_limit:
                     break
                 if isinstance(comment, MoreComments):
+                    limit = limit + 1
                     continue
                 master_list.append(comment.body)
                 limit = limit + 1

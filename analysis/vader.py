@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import seaborn as sns
 import nltk
 import pandas as pd
 from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA

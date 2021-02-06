@@ -14,7 +14,9 @@ black_list = set(['A', 'GO', 'DD', 'RH', 'TO', 'HOLD', 'UP',
                   'FOR', 'IQ', 'ALL', 'CEO', 'OR', 'NET', 'SHO', 'ON', 'VERY', 'AT',
                   'IT', 'LOW', 'REAL', 'TRUE', 'SU', 'SI', 'SAFE', 'BE', 'HUGE',
                   'NEW', 'HEAR', 'JP', 'HOPE', 'TELL', 'BEST', 'LOVE', 'IP', 'FCF',
-                  'ANY', 'SUN', 'TD', 'FUND', 'NOW', 'NEXT', 'TV', 'NOW', 'ONE', 'TM', 'PM', 'PT', 'AI', 'CBD'])
+                  'ANY', 'SUN', 'TD', 'FUND', 'NOW', 'NEXT', 'TV', 'NOW', 'ONE', 
+                  'TM', 'PM', 'PT', 'AI', 'CBD','UK','USA','CRY','SELF','GS', 'LIFE'
+                  'TREE', 'GROW'])
 
 
 def similar(a, b, min_similarity=SIMILARITY_THRESHOLD):
@@ -22,9 +24,8 @@ def similar(a, b, min_similarity=SIMILARITY_THRESHOLD):
 
 
 def get_company_sentiment(company_names, comments):
-    # company_names - [(ticker, company_name)]
-    # comments - ['comment1', 'comment2']
     sentiment_data = dict()
+    count_data = dict()
 
     for comment in comments:
         sent_score = sentiment_score(comment)
@@ -33,14 +34,19 @@ def get_company_sentiment(company_names, comments):
             if (comment.find(" " + ticker + " ") >= 0 or comment.find(" $" + ticker + " ") >= 0) and ticker not in black_list:
                 if not ticker in sentiment_data:
                     sentiment_data[ticker] = val
+                    count_data[ticker] = 1
                 else:
                     sentiment_data[ticker] += val
-    lst = [(ticker, val) for ticker, val in sentiment_data.items()]
-    sorted_lst = sorted(lst, key=lambda x: x[1])
-    if len(sorted_lst) < 20:
-        return {key: val for key, val in sorted_lst}
-    top_values = sorted_lst[:10] + sorted_lst[-10:]
-    return {key: val for key, val in top_values}
+                    count_data[ticker] += 1
+    aver_data = {key: (sentiment_data[key])/count_data[key] for key in sentiment_data.keys()}
+    sentiment_lst = [(ticker, val) for ticker, val in sentiment_data.items()]
+    count_lst = [(ticker, val) for ticker, val in count_data.items()]
+    aver_lst = [(ticker, val) for ticker, val in aver_data.items()]
+    sort_sent = sorted(sentiment_lst, key=lambda x: x[1])
+    sort_count = sorted(count_lst, key=lambda x: x[1])
+    sort_aver = sorted(aver_lst, key=lambda x: x[1])
+    print(sort_sent, sort_count, sort_aver)
+    return sort_sent, sort_count, sort_aver
 
 
 
@@ -63,4 +69,8 @@ def get_company_count(company_names, comments):
     top_values = sorted_lst[:20]
     return {key: val for key, val in top_values}
 
-    
+def sort_data(lst):
+    if len(lst) < 20:
+        return {key: val for key, val in lst}
+    top_values = lst[:10] + lst[-10:]
+    return {key: val for key, val in top_values}
