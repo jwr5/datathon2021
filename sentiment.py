@@ -1,3 +1,6 @@
+from analysis.vader import sentiment_score
+
+
 def get_company_sentiment(company_names, comments):
     # company_names - [(ticker, company_name)]
     # comments - ['comment1', 'comment2']
